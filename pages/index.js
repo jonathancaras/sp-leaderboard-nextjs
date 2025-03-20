@@ -32,14 +32,15 @@ export default function Home() {
       </Head>
 
       <div className="container">
-        <header>
-          <div className="logo-container">
-            <h1>Satoshi Port</h1>
-          </div>
-          <h1>Points Program Leaderboard</h1>
-          <p className="subtitle">Earn points, climb the ranks, unlock rewards</p>
-          <div className="bitcoin-icon">₿</div>
-        </header>
+        // In your pages/index.js file, update the header section:
+    <header>
+      <div className="logo-container">
+        <img src="/Logo_Satoshi.png" alt="Satoshi Port" className="logo" />
+      </div>
+      <h1>Points Program Leaderboard</h1>
+      <p className="subtitle">Earn points, climb the ranks, unlock rewards</p>
+      <div className="bitcoin-icon">₿</div>
+    </header>
         
         <main>
           <div className="leaderboard">
