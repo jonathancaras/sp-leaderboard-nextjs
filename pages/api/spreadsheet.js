@@ -48,8 +48,8 @@ export default async function handler(req, res) {
     // Map the data to our format using the exact column names from your sheet
     const formattedParticipants = parseResult.data.map(row => {
       // Use the exact column names you provided
-      const wallet = row["Near Wallet Address"] || "";
-      const handle = row["X User Name"] || "";
+      const wallet = row["NearWalletAddress"] || "";
+      const handle = row["XUserName"] || "";
       const points = parseInt(row["Points"]) || 0;
       
       return { wallet, handle, points };
