@@ -16,16 +16,37 @@
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Match font from satoshiport.com */
+body, h1, h2, h3, p, div {
+  font-family: 'Poppins', 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
   background-color: var(--dark-bg);
   color: var(--text-light);
   min-height: 100vh;
+  background-image: url('/shanghai-min.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  backdrop-filter: blur(3px);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Update logo styles */
+.logo-container {
+  margin-bottom: 1rem;
+}
+
+.logo {
+  height: 80px;
+  width: auto;
 }
 
 header {
@@ -113,9 +134,10 @@ main {
   font-weight: 500;
 }
 
+/* Center the points column */
 .points {
   font-weight: 700;
-  text-align: right;
+  text-align: center;
   color: var(--white);
 }
 
