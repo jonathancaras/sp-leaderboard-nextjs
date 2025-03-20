@@ -1,4 +1,3 @@
-// Update your pages/api/spreadsheet.js file with this code:
 import Papa from 'papaparse';
 
 export default async function handler(req, res) {
@@ -21,11 +20,15 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Empty CSV data received', csvUrl });
     }
     
+    // Log raw CSV data for debugging (first 500 chars)
+    console.log('Raw CSV data (sample):', csvData.substring(0, 500));
+    
     // Parse CSV to JSON
     const parseResult = Papa.parse(csvData, {
       header: true,
       dynamicTyping: true,
-      skipEmptyLines: true
+      skipEmptyLines: true,
+      transformHeader: header => header.trim() // Trim whitespace from headers
     });
     
     // Check for parsing errors
@@ -33,33 +36,33 @@ export default async function handler(req, res) {
       return res.status(400).json({ 
         error: 'CSV parsing error', 
         details: parseResult.errors,
-        sample: csvData.substring(0, 200) // Show sample of the CSV
+        sample: csvData.substring(0, 200)
       });
     }
     
-    // Log column headers for debugging
+    // Log column headers and data for debugging
     const headers = parseResult.meta.fields;
     console.log('CSV Headers:', headers);
+    console.log('Raw data sample:', parseResult.data.slice(0, 2));
     
-    // Map the data to a consistent format with more logging
+    // Map the data to our format using the exact column names from your sheet
     const formattedParticipants = parseResult.data.map(row => {
-      const wallet = row["NEAR Wallet"] || row["near_wallet"] || row["wallet"] || "";
-      const handle = row["X Handle"] || row["x_handle"] || row["twitter"] || "";
-      const points = row["Total Points"] || row["total_points"] || row["points"] || 0;
+      // Use the exact column names you provided
+      const wallet = row["Near Wallet Address"] || "";
+      const handle = row["X User Name"] || "";
+      const points = parseInt(row["Points"]) || 0;
       
       return { wallet, handle, points };
     });
     
-    // Log some data for debugging
-    console.log('Total rows before filtering:', parseResult.data.length);
-    console.log('Sample row (first):', parseResult.data[0]);
+    // Log formatted data for debugging
+    console.log('Formatted data sample:', formattedParticipants.slice(0, 2));
     
     // Filter out incomplete entries and sort by points
-    const sortedParticipants = formattedParticipants
-      .filter(p => p.wallet && p.points)
-      .sort((a, b) => b.points - a.points);
+    const filteredParticipants = formattedParticipants.filter(p => p.wallet && p.points);
+    console.log('Filtered entries count:', filteredParticipants.length);
     
-    console.log('Filtered and sorted rows:', sortedParticipants.length);
+    const sortedParticipants = filteredParticipants.sort((a, b) => b.points - a.points);
     
     // Return the sorted data
     res.status(200).json(sortedParticipants);
@@ -67,8 +70,7 @@ export default async function handler(req, res) {
     console.error('Error fetching spreadsheet:', error);
     res.status(500).json({ 
       error: 'Failed to fetch spreadsheet data', 
-      message: error.message,
-      stack: error.stack
+      message: error.message
     });
   }
 }
