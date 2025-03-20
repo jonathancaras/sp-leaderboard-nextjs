@@ -32,7 +32,7 @@ export default function Home() {
       </Head>
 
       <div className="container">
-        // In your pages/index.js file, update the header section:
+
     <header>
       <div className="logo-container">
         <img src="/Logo_Satoshi.png" alt="Satoshi Port" className="logo" />
